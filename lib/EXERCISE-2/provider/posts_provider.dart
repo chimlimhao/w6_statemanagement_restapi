@@ -6,18 +6,15 @@ import 'async_value.dart';
 
 class PostProvider extends ChangeNotifier {
   final PostRepository _repository;
-
   AsyncValue<List<Post>>? postValue;
-
-  PostProvider({required PostRepository repository}) : _repository = repository;
+  PostProvider(this._repository);
 
   Future<void> fetchPosts() async {
-    // 1-  Set loading state
     postValue = AsyncValue.loading();
     notifyListeners();
 
     try {
-      final posts = await _repository.getPosts();
+      final posts = await _repository.fetchPosts();
       if (posts.isEmpty) {
         postValue = AsyncValue.empty();
       } else {
@@ -29,3 +26,9 @@ class PostProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+// 1-  Set loading state
+// 2-  Fetch the posts
+// 3-  Display the posts
+// 4-  Handle errors
+// 5-  Update the state when the posts are fetched
